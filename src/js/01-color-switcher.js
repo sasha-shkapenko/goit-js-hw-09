@@ -3,14 +3,19 @@ const stopBtnEl = document.querySelector('[data-stop]');
 const bodyEl = document.querySelector('body');
 let timerId = null;
 
+stopBtnEl.disabled = true;
 startBtnEl.addEventListener('click', () => {
   timerId = setInterval(() => {
       bodyEl.style.backgroundColor = getRandomHexColor();
   }, 1000);
+  startBtnEl.disabled = true;
+  stopBtnEl.disabled = false;
 });
 
 stopBtnEl.addEventListener('click', () => {
-    clearInterval(timerId);
+  clearInterval(timerId);
+  startBtnEl.disabled = false;
+  stopBtnEl.disabled = true;
 });
 
 function getRandomHexColor() {

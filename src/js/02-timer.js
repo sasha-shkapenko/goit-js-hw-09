@@ -1,7 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import Notiflix from 'notiflix';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs = {
     inputEl: document.querySelector('#datetime-picker'),
@@ -30,7 +29,7 @@ const options = {
       }
         selectedTime = selectedDates[0].getTime();
         clearInterval(timerId);
-        markupEdit({ days:0, hours:0, minutes:0, seconds:0 })
+      markupEdit({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     },
 };
 
@@ -41,8 +40,14 @@ refs.btnEl.addEventListener('click', onBtnClick);
 function onBtnClick() {
     timerId = setInterval(() => {
     const restTime = convertMs(selectedTime - Date.now());
-    markupEdit(restTime);
-  }, 1000);
+      markupEdit(restTime);
+      stopTicking(restTime);
+    }, 1000);
+}
+function stopTicking({ days, hours, minutes, seconds }) {
+  if (days <0 ||  hours<0 || minutes<0 || seconds<0) {
+    markupEdit({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  }
 }
 function markupEdit({ days, hours, minutes, seconds }) {
     refs.days.textContent = addLeadingZero(days);
